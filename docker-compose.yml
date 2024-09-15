@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: erp-aero-api-container
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env.prod
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13-alpine
+    container_name: erp-aero-db
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: root
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
