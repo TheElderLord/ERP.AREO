@@ -30,7 +30,10 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         if (tokenRecord) {
             return res.status(401).json({ message: 'Token revoked' });
         }
-        req.user = payload;
+        req.user = {
+            id: payload.id,
+            deviceId: payload.deviceId,
+        };
         next();
     }
     catch (error) {

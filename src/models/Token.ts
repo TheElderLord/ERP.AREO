@@ -17,7 +17,7 @@ import {
     token: string;
     expiresAt: Date;
     revoked: boolean;
-    deviceId: string;
+    deviceId: string | null;
   }
   
   interface TokenCreationAttributes extends Optional<TokenAttributes, 'id' | 'revoked'> {}

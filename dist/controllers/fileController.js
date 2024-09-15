@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listFiles = exports.uploadFile = void 0;
+exports.updateFile = exports.deleteFile = exports.downloadFile = exports.getFileInfo = exports.listFiles = exports.uploadFile = void 0;
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
-const File_1 = __importDefault(require("../models/File"));
+const fileService_1 = __importDefault(require("../services/fileService"));
+const logger_1 = __importDefault(require("../utils/logger"));
 const storage = multer_1.default.diskStorage({
     destination: './uploads/',
     filename: (_req, file, cb) => {
@@ -29,20 +30,14 @@ exports.uploadFile = [
     (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const file = req.file;
         if (!file)
-            return next({ status: 400, message: 'No file uploaded' });
+            return res.status(400).json({ message: 'No file uploaded' });
         try {
-            const { originalname, mimetype, size, filename } = file;
-            const extension = path_1.default.extname(originalname);
-            yield File_1.default.create({
-                userId: req.user.id,
-                name: filename,
-                extension,
-                mimeType: mimetype,
-                size,
-            });
-            res.status(201).json({ message: 'File uploaded successfully' });
+            const userId = req.user.id;
+            const result = yield fileService_1.default.uploadFile(file, userId);
+            res.status(201).json(result);
         }
         catch (error) {
+            logger_1.default.error(`File Upload Error: ${getErrorMessage(error)}`);
             next(error);
         }
     })),
@@ -52,15 +47,71 @@ exports.listFiles = (0, express_async_handler_1.default)((req, res, next) => __a
     const page = parseInt(req.query.page) || 1;
     const offset = (page - 1) * listSize;
     try {
-        const files = yield File_1.default.findAll({
-            where: { userId: req.user.id },
-            limit: listSize,
-            offset,
-        });
+        const userId = req.user.id;
+        const files = yield fileService_1.default.listFiles(userId, listSize, offset);
         res.json({ files });
     }
     catch (error) {
+        logger_1.default.error(`List Files Error: ${getErrorMessage(error)}`);
         next(error);
     }
 }));
-// Implement getFileInfo, downloadFile, deleteFile, updateFile similarly
+exports.getFileInfo = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const fileId = parseInt(req.params.id);
+    try {
+        const userId = req.user.id;
+        const file = yield fileService_1.default.getFileInfo(userId, fileId);
+        res.json(file);
+    }
+    catch (error) {
+        logger_1.default.error(`Get File Info Error: ${getErrorMessage(error)}`);
+        next(error);
+    }
+}));
+exports.downloadFile = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const fileId = parseInt(req.params.id);
+    try {
+        const userId = req.user.id;
+        const { filePath, fileName } = yield fileService_1.default.downloadFile(userId, fileId);
+        res.download(filePath, fileName);
+    }
+    catch (error) {
+        logger_1.default.error(`Download File Error: ${getErrorMessage(error)}`);
+        next(error);
+    }
+}));
+exports.deleteFile = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const fileId = parseInt(req.params.id);
+    try {
+        const userId = req.user.id;
+        const result = yield fileService_1.default.deleteFile(userId, fileId);
+        res.json(result);
+    }
+    catch (error) {
+        logger_1.default.error(`Delete File Error: ${getErrorMessage(error)}`);
+        next(error);
+    }
+}));
+exports.updateFile = [
+    upload.single('file'),
+    (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        const fileId = parseInt(req.params.id);
+        const newFile = req.file;
+        if (!newFile)
+            return res.status(400).json({ message: 'No file uploaded' });
+        try {
+            const userId = req.user.id;
+            const result = yield fileService_1.default.updateFile(userId, fileId, newFile);
+            res.json(result);
+        }
+        catch (error) {
+            logger_1.default.error(`Update File Error: ${getErrorMessage(error)}`);
+            next(error);
+        }
+    })),
+];
+function getErrorMessage(error) {
+    if (error instanceof Error)
+        return error.message;
+    return String(error);
+}

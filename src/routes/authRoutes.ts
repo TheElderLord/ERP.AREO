@@ -1,11 +1,36 @@
+// src/routes/authRoutes.ts
 import { Router } from 'express';
-import * as authController from '../controllers/authController';
-import { signupValidation } from '../validators/authValidar';
+import { signup, signin, refreshToken, logout } from '../controllers/authController';
+import { validateSignup, validateSignin } from '../validators/authValidator';
 
 const router = Router();
 
-router.post('/signup', signupValidation, authController.signup);
-router.post('/signin', signupValidation, authController.signin);
-router.post('/signin/new_token', authController.refreshToken);
+/**
+ * @route   POST /signup
+ * @desc    Register a new user
+ * @access  Public
+ */
+router.post('/signup', validateSignup, signup);
+
+/**
+ * @route   POST /signin
+ * @desc    Authenticate user and get tokens
+ * @access  Public
+ */
+router.post('/signin', validateSignin, signin);
+
+/**
+ * @route   POST /refresh-token
+ * @desc    Refresh access token
+ * @access  Public
+ */
+router.post('/refresh-token', refreshToken);
+
+/**
+ * @route   POST /logout
+ * @desc    Logout user by revoking tokens
+ * @access  Private
+ */
+router.post('/logout', logout);
 
 export default router;

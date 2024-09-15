@@ -1,18 +1,29 @@
+// src/utils/tokenUtils.ts
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+import User from '../models/User';
 
-dotenv.config();
+export function generateAccessToken(user: User, deviceId?: string): string {
+  const payload = {
+    id: user.id,
+    deviceId,
+  };
 
-export const generateAccessToken = (user: any, deviceId: string) => {
-  return jwt.sign({ id: user.id, deviceId }, process.env.JWT_SECRET as string, {
-    expiresIn: process.env.TOKEN_EXPIRY,
-    algorithm: 'HS256',
+  const token = jwt.sign(payload, process.env.JWT_SECRET as string, {
+    expiresIn: process.env.TOKEN_EXPIRY || '10m',
   });
-};
 
-export const generateRefreshToken = (user: any, deviceId: string) => {
-  return jwt.sign({ id: user.id, deviceId }, process.env.JWT_REFRESH_SECRET as string, {
-    expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
-    algorithm: 'HS256',
+  return token;
+}
+
+export function generateRefreshToken(user: User, deviceId?: string): string {
+  const payload = {
+    id: user.id,
+    deviceId,
+  };
+
+  const token = jwt.sign(payload, process.env.JWT_REFRESH_SECRET as string, {
+    expiresIn: process.env.REFRESH_TOKEN_EXPIRY || '7d',
   });
-};
+
+  return token;
+}

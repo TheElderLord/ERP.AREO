@@ -1,9 +1,10 @@
+// src/controllers/fileController.ts
 import { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 import path from 'path';
-import fs from 'fs';
 import asyncHandler from 'express-async-handler';
-import File from '../models/File';
+import fileService from '../services/fileService';
+import logger from '../utils/logger';
 
 const storage = multer.diskStorage({
   destination: './uploads/',
@@ -16,46 +17,102 @@ const upload = multer({ storage });
 
 export const uploadFile = [
   upload.single('file'),
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const file = req.file;
 
-    if (!file) return next({ status: 400, message: 'No file uploaded' });
+    if (!file) {
+      res.status(400).json({ message: 'No file uploaded' });
+      return;
+    }
 
     try {
-      const { originalname, mimetype, size, filename } = file;
-      const extension = path.extname(originalname);
-
-      await File.create({
-        userId: (req as any).user.id,
-        name: filename,
-        extension,
-        mimeType: mimetype,
-        size,
-      });
-
-      res.status(201).json({ message: 'File uploaded successfully' });
+      const userId = req.user!.id;
+      const result = await fileService.uploadFile(file, userId);
+      res.status(201).json(result);
     } catch (error) {
+      logger.error(`File Upload Error: ${getErrorMessage(error)}`);
       next(error);
     }
   }),
 ];
 
-export const listFiles = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+export const listFiles = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const listSize = parseInt(req.query.list_size as string) || 10;
   const page = parseInt(req.query.page as string) || 1;
   const offset = (page - 1) * listSize;
 
   try {
-    const files = await File.findAll({
-      where: { userId: (req as any).user.id },
-      limit: listSize,
-      offset,
-    });
-
+    const userId = req.user!.id;
+    const files = await fileService.listFiles(userId, listSize, offset);
     res.json({ files });
   } catch (error) {
+    logger.error(`List Files Error: ${getErrorMessage(error)}`);
     next(error);
   }
 });
 
-// Implement getFileInfo, downloadFile, deleteFile, updateFile similarly
+export const getFileInfo = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const fileId = parseInt(req.params.id);
+
+  try {
+    const userId = req.user!.id;
+    const file = await fileService.getFileInfo(userId, fileId);
+    res.json(file);
+  } catch (error) {
+    logger.error(`Get File Info Error: ${getErrorMessage(error)}`);
+    next(error);
+  }
+});
+
+export const downloadFile = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const fileId = parseInt(req.params.id);
+
+  try {
+    const userId = req.user!.id;
+    const { filePath, fileName } = await fileService.downloadFile(userId, fileId);
+    res.download(filePath, fileName);
+  } catch (error) {
+    logger.error(`Download File Error: ${getErrorMessage(error)}`);
+    next(error);
+  }
+});
+
+export const deleteFile = asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const fileId = parseInt(req.params.id);
+
+  try {
+    const userId = req.user!.id;
+    const result = await fileService.deleteFile(userId, fileId);
+    res.json(result);
+  } catch (error) {
+    logger.error(`Delete File Error: ${getErrorMessage(error)}`);
+    next(error);
+  }
+});
+
+export const updateFile = [
+  upload.single('file'),
+  asyncHandler(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const fileId = parseInt(req.params.id);
+    const newFile = req.file;
+
+    if (!newFile) {
+      res.status(400).json({ message: 'No file uploaded' });
+      return;
+    }
+
+    try {
+      const userId = req.user!.id;
+      const result = await fileService.updateFile(userId, fileId, newFile);
+      res.json(result);
+    } catch (error) {
+      logger.error(`Update File Error: ${getErrorMessage(error)}`);
+      next(error);
+    }
+  }),
+];
+
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  return String(error);
+}

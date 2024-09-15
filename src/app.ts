@@ -1,3 +1,4 @@
+// src/app.ts
 import express from 'express';
 import corsMiddleware from './middlewares/corsMiddleware';
 import securityMiddleware from './middlewares/securityMiddleware';

@@ -1,15 +1,14 @@
+// src/routes/index.ts
 import { Router } from 'express';
 import authRoutes from './authRoutes';
-import fileRoutes from './fileRouter';
-import * as userController from '../controllers/userController';
-import authMiddleware from '../middlewares/authMiddleware';
+import userRoutes from './userRoutes';
+import fileRoutes from './fileRoutes';
 
 const router = Router();
 
+// Use the route modules
 router.use('/', authRoutes);
-router.use('/file', fileRoutes);
-
-router.get('/info', authMiddleware, userController.info);
-router.get('/logout', authMiddleware, userController.info);
+router.use('/', userRoutes);
+router.use('/', fileRoutes);
 
 export default router;

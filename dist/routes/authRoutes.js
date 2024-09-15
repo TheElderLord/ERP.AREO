@@ -1,33 +1,32 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+// src/routes/authRoutes.ts
 const express_1 = require("express");
-const authController = __importStar(require("../controllers/authController"));
-const authValidar_1 = require("../validators/authValidar");
+const authController_1 = require("../controllers/authController");
+const authValidator_1 = require("../validators/authValidator");
 const router = (0, express_1.Router)();
-router.post('/signup', authValidar_1.signupValidation, authController.signup);
-router.post('/signin', authValidar_1.signupValidation, authController.signin);
-router.post('/signin/new_token', authController.refreshToken);
+/**
+ * @route   POST /signup
+ * @desc    Register a new user
+ * @access  Public
+ */
+router.post('/signup', authValidator_1.validateSignup, authController_1.signup);
+/**
+ * @route   POST /signin
+ * @desc    Authenticate user and get tokens
+ * @access  Public
+ */
+router.post('/signin', authValidator_1.validateSignin, authController_1.signin);
+/**
+ * @route   POST /refresh-token
+ * @desc    Refresh access token
+ * @access  Public
+ */
+router.post('/refresh-token', authController_1.refreshToken);
+/**
+ * @route   POST /logout
+ * @desc    Logout user by revoking tokens
+ * @access  Private
+ */
+router.post('/logout', authController_1.logout);
 exports.default = router;
