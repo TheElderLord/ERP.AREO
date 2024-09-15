@@ -16,12 +16,12 @@ import logger from './utils/logger';
 const PORT = process.env.PORT || 3000;
 
 
-// ... existing imports
 
-console.log(`Running in ${process.env.NODE_ENV} mode`);
-console.log(`Database Host: ${process.env.DB_HOST}`);
 
-// ... rest of your server code
+// console.log(`Running in ${process.env.NODE_ENV} mode`);
+// console.log(`Database Host: ${process.env.DB_HOST}`);
+
+
 
 
 sequelize.sync({ force: false }).then(() => {

@@ -29,8 +29,10 @@ exports.uploadFile = [
     upload.single('file'),
     (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const file = req.file;
-        if (!file)
-            return res.status(400).json({ message: 'No file uploaded' });
+        if (!file) {
+            res.status(400).json({ message: 'No file uploaded' });
+            return;
+        }
         try {
             const userId = req.user.id;
             const result = yield fileService_1.default.uploadFile(file, userId);
@@ -97,8 +99,10 @@ exports.updateFile = [
     (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const fileId = parseInt(req.params.id);
         const newFile = req.file;
-        if (!newFile)
-            return res.status(400).json({ message: 'No file uploaded' });
+        if (!newFile) {
+            res.status(400).json({ message: 'No file uploaded' });
+            return;
+        }
         try {
             const userId = req.user.id;
             const result = yield fileService_1.default.updateFile(userId, fileId, newFile);

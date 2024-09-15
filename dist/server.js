@@ -37,10 +37,10 @@ const app_1 = __importDefault(require("./app"));
 const config_1 = require("./config");
 const logger_1 = __importDefault(require("./utils/logger"));
 const PORT = process.env.PORT || 3000;
-// ... existing imports
+
 console.log(`Running in ${process.env.NODE_ENV} mode`);
 console.log(`Database Host: ${process.env.DB_HOST}`);
-// ... rest of your server code
+
 config_1.sequelize.sync({ force: false }).then(() => {
     app_1.default.listen(PORT, () => {
         logger_1.default.info(`Server started on port ${PORT} in ${process.env.NODE_ENV} mode`);

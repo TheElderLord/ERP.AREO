@@ -13,11 +13,11 @@ const router = (0, express_1.Router)();
  * @desc    Get user information
  * @access  Private
  */
-router.get('/user', authMiddleware_1.default, userController_1.getUserInfo);
+router.get('/info', authMiddleware_1.default, userController_1.getUserInfo);
 /**
  * @route   PUT /user
  * @desc    Update user information
  * @access  Private
  */
-router.put('/user', authMiddleware_1.default, userController_1.updateUserInfo);
+router.put('/update', authMiddleware_1.default, userController_1.updateUserInfo);
 exports.default = router;

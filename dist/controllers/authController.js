@@ -50,7 +50,9 @@ exports.signin = (0, express_async_handler_1.default)((req, res, next) => __awai
     }
 }));
 exports.refreshToken = (0, express_async_handler_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { refreshToken, deviceId } = req.body;
+    const { deviceId } = req.body;
+    const refreshToken = req.params.refresh;
+    console.log(refreshToken);
     if (!refreshToken)
         return next({ status: 401, message: 'Refresh token required' });
     try {

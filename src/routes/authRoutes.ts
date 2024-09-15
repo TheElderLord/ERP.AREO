@@ -15,7 +15,7 @@ router.post('/signup', validateSignup, signup);
 /**
  * @route   POST /signin
  * @desc    Authenticate user and get tokens
- * @access  Public
+ * @access  Publics
  */
 router.post('/signin', validateSignin, signin);
 
@@ -24,7 +24,7 @@ router.post('/signin', validateSignin, signin);
  * @desc    Refresh access token
  * @access  Public
  */
-router.post('/refresh-token', refreshToken);
+router.post('/signin/:refresh', refreshToken);
 
 /**
  * @route   POST /logout

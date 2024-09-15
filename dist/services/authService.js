@@ -37,7 +37,7 @@ class AuthService {
                 userId: user.id,
                 token: refreshToken,
                 expiresAt: new Date(Date.now() + expiresInMilliseconds),
-                deviceId,
+                deviceId: deviceId || null, // Assign null if undefined
             });
             return { accessToken, refreshToken };
         });
@@ -63,7 +63,7 @@ class AuthService {
                 userId: user.id,
                 token: refreshToken,
                 expiresAt: new Date(Date.now() + expiresInMilliseconds),
-                deviceId,
+                deviceId: deviceId || null, // Assign null if undefined
             });
             return { accessToken, refreshToken };
         });

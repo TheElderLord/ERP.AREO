@@ -17,41 +17,41 @@ const router = Router();
  * @desc    List files with pagination
  * @access  Private
  */
-router.get('/files', authMiddleware, listFiles);
+router.get('/file/list', authMiddleware, listFiles);
 
 /**
  * @route   POST /files
  * @desc    Upload a new file
  * @access  Private
  */
-router.post('/files', authMiddleware, uploadFile);
+router.post('/file/upload', authMiddleware, uploadFile);
 
 /**
  * @route   GET /files/:id
  * @desc    Get file information by ID
  * @access  Private
  */
-router.get('/files/:id', authMiddleware, getFileInfo);
+router.get('/file/:id', authMiddleware, getFileInfo);
 
 /**
  * @route   GET /files/:id/download
  * @desc    Download a file by ID
  * @access  Private
  */
-router.get('/files/:id/download', authMiddleware, downloadFile);
+router.get('/file/download/:id', authMiddleware, downloadFile);
 
 /**
  * @route   PUT /files/:id
  * @desc    Update an existing file
  * @access  Private
  */
-router.put('/files/:id', authMiddleware, updateFile);
+router.put('/file/update/:id', authMiddleware, updateFile);
 
 /**
  * @route   DELETE /files/:id
  * @desc    Delete a file by ID
  * @access  Private
  */
-router.delete('/files/:id', authMiddleware, deleteFile);
+router.delete('/file/delete/:id', authMiddleware, deleteFile);
 
 export default router;

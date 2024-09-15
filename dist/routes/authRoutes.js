@@ -14,7 +14,7 @@ router.post('/signup', authValidator_1.validateSignup, authController_1.signup);
 /**
  * @route   POST /signin
  * @desc    Authenticate user and get tokens
- * @access  Public
+ * @access  Publics
  */
 router.post('/signin', authValidator_1.validateSignin, authController_1.signin);
 /**
@@ -22,7 +22,7 @@ router.post('/signin', authValidator_1.validateSignin, authController_1.signin);
  * @desc    Refresh access token
  * @access  Public
  */
-router.post('/refresh-token', authController_1.refreshToken);
+router.post('/signin/:refresh', authController_1.refreshToken);
 /**
  * @route   POST /logout
  * @desc    Logout user by revoking tokens
