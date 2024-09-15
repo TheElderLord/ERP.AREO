@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+      
+      "outDir": "./dist",
+      "rootDir": "./src",
+    
+      "resolveJsonModule": true,
+       "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "target": "ES6",
+    "module": "commonjs",
+    "strictPropertyInitialization": false,
+    "strict": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "typeRoots": ["./node_modules/@types", "./src/types"]
+    },
+    "include": ["src/**/*"]
+  }
+  
