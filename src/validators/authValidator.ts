@@ -12,10 +12,7 @@ export const validateSignup = [
     .withMessage('Password is required')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long'),
-  body('deviceId')
-    .optional()
-    .isString()
-    .withMessage('Device ID must be a string'),
+
 ];
 
 export const validateSignin = [
@@ -27,8 +24,4 @@ export const validateSignin = [
   body('password')
     .notEmpty()
     .withMessage('Password is required'),
-  body('deviceId')
-    .optional()
-    .isString()
-    .withMessage('Device ID must be a string'),
 ];

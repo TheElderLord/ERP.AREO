@@ -1,39 +1,23 @@
 // src/controllers/authController.ts
 import { Request, Response, NextFunction } from 'express';
 import asyncHandler from 'express-async-handler';
-import authService from '../services/authService';
+import authService from '../services/auth.service';
 import { validationResult } from 'express-validator';
-import logger from '../utils/logger';
+import logger from '../../../utils/logger';
 
-export const signup = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    // Validate Input
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return next({ status: 400, message: 'Validation Failed', errors: errors.array() });
-    }
 
-    const { id, password, deviceId } = req.body;
-
-    try {
-        const tokens = await authService.register(id, password, deviceId);
-        res.status(201).json(tokens);
-    } catch (error) {
-        logger.error(`Signup Error: ${getErrorMessage(error)}`);
-        next(error);
-    }
-});
 
 export const signin = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     // Validate Input
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return next({ status: 400, message: 'Validation Failed', errors: errors.array() });
-    }
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //     return next({ status: 400, message: 'Validation Failed' });
+    // }
 
-    const { id, password, deviceId } = req.body;
-
+    const { login, password } = req.body;
+ 
     try {
-        const tokens = await authService.login(id, password, deviceId);
+        const tokens = await authService.login(login, password);
         res.json(tokens);
     } catch (error) {
         logger.error(`Signin Error: ${getErrorMessage(error)}`);
@@ -42,14 +26,14 @@ export const signin = asyncHandler(async (req: Request, res: Response, next: Nex
 });
 
 export const refreshToken = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    const { deviceId } = req.body;
+    const { login} = req.body;
     const  refreshToken  = req.params.refresh;
     // console.log(refreshToken)
 
     if (!refreshToken) return next({ status: 401, message: 'Refresh token required' });
 
     try {
-        const newToken = await authService.refreshAccessToken(refreshToken, deviceId);
+        const newToken = await authService.refreshAccessToken(refreshToken, login);
         res.json(newToken);
     } catch (error) {
         logger.error(`Refresh Token Error: ${getErrorMessage(error)}`);

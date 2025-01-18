@@ -5,7 +5,7 @@ import logger from '../utils/logger';
 interface Error {
   status?: number;
   message: string;
-  errors?: ValidationError[];
+  // errors?: ValidationError[];
 }
 
 const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction) => {
@@ -16,7 +16,7 @@ const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunct
 
   res.status(status).json({
     message,
-    errors: err.errors || [],
+    // errors: err.errors || [],
   });
 };
 

@@ -1,16 +1,9 @@
 // src/routes/authRoutes.ts
 import { Router } from 'express';
-import { signup, signin, refreshToken, logout } from '../controllers/authController';
-import { validateSignup, validateSignin } from '../validators/authValidator';
+import { signin, refreshToken, logout } from '../controllers/auth.controller';
+import { validateSignup, validateSignin } from '../../../validators/authValidator';
 
 const router = Router();
-
-/**
- * @route   POST /signup
- * @desc    Register a new user
- * @access  Public
- */
-router.post('/signup', validateSignup, signup);
 
 /**
  * @route   POST /signin

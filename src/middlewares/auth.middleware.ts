@@ -25,8 +25,8 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
     }
 
     req.user = {
-      id: payload.id,
-      deviceId: payload.deviceId,
+      login: payload.login,
+      password: payload.password,
     };
     next();
   } catch (error) {

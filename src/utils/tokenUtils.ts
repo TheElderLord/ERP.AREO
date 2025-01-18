@@ -1,11 +1,12 @@
 // src/utils/tokenUtils.ts
 import jwt from 'jsonwebtoken';
-import User from '../models/User';
+import { User } from '../models/User';
+import { Role } from '../types/enums/role.enum';
 
-export function generateAccessToken(user: User, deviceId?: string): string {
+export function generateAccessToken(user: User): string {
   const payload = {
     id: user.id,
-    deviceId,
+    role: user.role,
   };
 
   const token = jwt.sign(payload, process.env.JWT_SECRET as string, {
@@ -15,10 +16,10 @@ export function generateAccessToken(user: User, deviceId?: string): string {
   return token;
 }
 
-export function generateRefreshToken(user: User, deviceId?: string): string {
+export function generateRefreshToken(user: User): string {
   const payload = {
     id: user.id,
-    deviceId,
+    
   };
 
   const token = jwt.sign(payload, process.env.JWT_REFRESH_SECRET as string, {
