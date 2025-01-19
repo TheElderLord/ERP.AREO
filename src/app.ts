@@ -3,7 +3,7 @@ import express from 'express';
 import corsMiddleware from './middlewares/cors.middleware';
 import securityMiddleware from './middlewares/security.middleware';
 import errorHandler from './middlewares/error.handler';
-import routes from './modules/admin/routes';
+import adminRoutes from './modules/admin/routes';
 
 const app = express();
 
@@ -13,7 +13,7 @@ app.use(corsMiddleware);
 app.use(securityMiddleware);
 
 // Routes
-app.use('/', routes);
+app.use('/admin', adminRoutes);
 
 // Error Handler
 app.use(errorHandler);
