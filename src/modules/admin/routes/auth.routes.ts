@@ -1,7 +1,7 @@
 // src/routes/authRoutes.ts
 import { Router } from 'express';
 import { signin, refreshToken, logout } from '../controllers/auth.controller';
-import { validateSignup, validateSignin } from '../../../validators/authValidator';
+import {  validateSignin } from '../../../validators/authValidator';
 
 const router = Router();
 

@@ -1,10 +1,13 @@
-// src/types/express/index.d.ts
-declare namespace Express {
-    export interface Request {
+import { Request } from 'express';
+
+declare global {
+  namespace Express {
+    interface Request {
       user?: {
-       login: string;
-       password: string;
+        id: number;
+        login: string;
+        password: string;
       };
     }
   }
-  
+}

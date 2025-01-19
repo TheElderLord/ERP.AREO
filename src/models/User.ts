@@ -11,7 +11,7 @@ import bcrypt from 'bcryptjs';
 import { Optional } from 'sequelize';
 
 // Import your new interfaces
-import { UserAttributes, UserCreationAttributes } from '../types/interfaces/user.interface'; // <— Adjust import path
+import { UserAttributes, UserCreationAttributes } from '../types/interfaces/users/user.interface'; // <— Adjust import path
 import { Role } from '../types/enums/role.enum'; // or wherever Role is defined
 import { Booking } from './Booking';
 import { Request } from './Request';
@@ -49,6 +49,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
     @Column({
         type: DataType.STRING,
         allowNull: false,
+        unique: true,
     })
     login: string;
 
@@ -66,14 +67,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
     })
     number?: string;
 
-    // 7) DateCreated 
-    // If you want a custom "dateCreated" column (separate from Sequelize's createdAt):
-    @Column({
-        type: DataType.DATE,
-        allowNull: false,
-        defaultValue: DataType.NOW,
-    })
-    dateCreated!: Date;
+    
 
     // 8) Comments (optional)
     @Column({

@@ -1,14 +1,14 @@
 // src/routes/index.ts
 import { Router } from 'express';
 import authRoutes from './auth.routes';
-// import userRoutes from './userRoutes';
+import userRoutes from './user.routes';
 // import fileRoutes from './fileRoutes';
 
 const router = Router();
 
 // Use the route modules
-router.use('/', authRoutes);
-// router.use('/', userRoutes);
+router.use('/auth', authRoutes);
+router.use('/users', userRoutes);
 // router.use('/', fileRoutes);
 
 export default router;

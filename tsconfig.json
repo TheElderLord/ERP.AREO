@@ -1,11 +1,10 @@
 {
-    "compilerOptions": {
-      
-      "outDir": "./dist",
-      "rootDir": "./src",
-    
-      "resolveJsonModule": true,
-       "experimentalDecorators": true,
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "target": "ES6",
     "module": "commonjs",
@@ -14,8 +13,7 @@
     "esModuleInterop": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
-   "typeRoots": ["./node_modules/@types", "./src/types"]
-    },
-    "include": ["src/**/*"]
-  }
-  
+    "typeRoots": ["./node_modules/@types", "./src/types/express"],
+  },
+  "include": ["src/**/*"]
+}

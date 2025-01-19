@@ -1,22 +1,16 @@
-// // src/routes/userRoutes.ts
-// import { Router } from 'express';
-// import { getUserInfo, updateUserInfo } from '../controllers/userController';
-// import authMiddleware from '../middlewares/authMiddleware';
+// src/routes/userRoutes.ts
+import { Router } from 'express';
+import { getUsersRequestHandler,  createUserRequestHandler, getUserByIdHandler, updateUserRequestHandler, deleteUserRequestHandler } from '../controllers/user.controller';
+import authMiddleware from '../../../middlewares/auth.middleware';
 
-// const router = Router();
+const router = Router();
 
-// /**
-//  * @route   GET /user
-//  * @desc    Get user information
-//  * @access  Private
-//  */
-// router.get('/info', authMiddleware, getUserInfo);
 
-// /**
-//  * @route   PUT /user
-//  * @desc    Update user information
-//  * @access  Private
-//  */
-// router.put('/update', authMiddleware, updateUserInfo);
+router.route('/').get( authMiddleware, getUsersRequestHandler)
+.post(authMiddleware,createUserRequestHandler);
 
-// export default router;
+router.route("/:id").get(authMiddleware,getUserByIdHandler)
+.put(authMiddleware,updateUserRequestHandler)
+.delete(authMiddleware,deleteUserRequestHandler);
+
+export default router;

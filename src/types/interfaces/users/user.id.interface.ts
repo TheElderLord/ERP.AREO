@@ -1,0 +1,3 @@
+interface UserId{
+    id: number;
+}

@@ -1,6 +1,6 @@
 import { Optional } from "sequelize";
-import { Role } from "../enums/role.enum";
-import { UserStatus } from "../enums/user-status.enum";
+import { Role } from "../../enums/role.enum";
+import { UserStatus } from "../../enums/user-status.enum";
 
 interface User {
     id: number;
@@ -10,7 +10,6 @@ interface User {
     password?: string;
     status?: UserStatus;
     number?: string;
-    dateCreated: Date;
     comments?: string;
     blacklist: boolean;
     role: Role;
@@ -28,7 +27,6 @@ export interface UserAttributes {
     password?: string;
     status?: UserStatus;
     number?: string;
-    dateCreated: Date;
     comments?: string;
     blacklist: boolean;
     role: Role;
@@ -39,5 +37,5 @@ export interface UserAttributes {
   
   // For creation, we make any auto-increment or default fields optional
   export interface UserCreationAttributes
-    extends Optional<UserAttributes, 'id' | 'dateCreated' | 'createdAt' | 'updatedAt'> {}
+    extends Optional<UserAttributes, 'id' |  'createdAt' | 'updatedAt'> {}
   
