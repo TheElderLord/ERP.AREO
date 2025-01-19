@@ -49,7 +49,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
     @Column({
         type: DataType.STRING,
         allowNull: false,
-        unique: true,
+        // unique: true,
     })
     login: string;
 

@@ -30,6 +30,10 @@ class UserService {
   async createUser(data: UserCreationAttributes) {
     const transaction = await this.sequelize.transaction();
     try {
+      const exist = await User.findOne({ where: { login:data.login } });
+      if(exist){
+        throw new Error('User already exist');
+      }
       const user = await User.create(data, { transaction });
       await transaction.commit();
       return user;
