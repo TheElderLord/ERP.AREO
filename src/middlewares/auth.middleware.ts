@@ -5,6 +5,7 @@ import Token from '../models/Token';
 import { User } from '../models/User';
 import { Role } from '../types/enums/role.enum';
 import { AuthRequest, UserResponse } from '../types/express/express-custom';
+import logger from '../utils/logger';
 
 dotenv.config();
 
@@ -36,12 +37,15 @@ const authMiddleware = async (req: AuthRequest, res: UserResponse, next: NextFun
     if(payload.role !== 'ADMIN'){
       return res.status(401).json({ message: 'Forbidden' });
     }
+    // console.log(payload);
 
     req.user = {
       id: payload.id,
       login: payload.login,
       password: payload.password,
     };
+
+    logger.info(`User ${payload.id} authenticated`);
 
     next();
   } catch (error) {

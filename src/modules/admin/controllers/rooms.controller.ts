@@ -13,25 +13,25 @@ export const getRoomsRequestHandler = asyncHandler(async (req: Request, res: Res
             data: rooms
         });
     } catch (error) {
-        logger.error(`Get User Info Error: ${getErrorMessage(error)}`);
+        logger.error(`Get Room Error: ${getErrorMessage(error)}`);
         next(error);
     }
 });
 
 export const getRoomByIdHandler = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userId = Number(req.params.id);
+        const roomId = Number(req.params.id);
         // const userService = new UserService(sequelize);
         // console.log(req.params)
-        const user = await roomService.getRoomById(userId);
-        if(!user) {
+        const room = await roomService.getRoomById(roomId);
+        if(!room) {
             res.status(404).json({msg: 'Room not found'});
             return;
         }
 
-        res.json(user);
+        res.json(room);
     } catch (error) {
-        logger.error(`Get User Info Error: ${getErrorMessage(error)}`);
+        logger.error(`Get Room Error: ${getErrorMessage(error)}`);
         next(error);
     }
 });
@@ -46,7 +46,7 @@ export const createRoomRequestHandler = asyncHandler(async (req: Request, res: R
         // const updatedUser = await userService.createUser();
         res.json(createdRoom);
     } catch (error) {
-        logger.error(`Create User Info Error: ${getErrorMessage(error)}`);
+        logger.error(`Create Room Error: ${getErrorMessage(error)}`);
         next(error);
     }
 });
@@ -60,7 +60,7 @@ export const updateRoomRequestHandler = asyncHandler(async (req: Request, res: R
         const updatedRoom = await roomService.updateRoom(roomId, req.body);
         res.json(updatedRoom);
     } catch (error) {
-        logger.error(`Update User Info Error: ${getErrorMessage(error)}`);
+        logger.error(`Update Room Error: ${getErrorMessage(error)}`);
         next(error);
     }
 });
