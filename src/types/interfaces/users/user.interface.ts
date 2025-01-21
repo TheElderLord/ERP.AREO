@@ -13,7 +13,7 @@ interface User {
     comments?: string;
     blacklist: boolean;
     role: Role;
-
+    isDeleted: boolean;
     // Timestamps
     createdAt: Date;
     updatedAt: Date;
@@ -30,6 +30,7 @@ export interface UserAttributes {
     comments?: string;
     blacklist: boolean;
     role: Role;
+    isDeleted: boolean;
   
     createdAt: Date;
     updatedAt: Date;

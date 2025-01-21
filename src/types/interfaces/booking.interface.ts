@@ -9,7 +9,9 @@ interface Booking {
     endDate: Date;
     comments?: string;
     isPaid: boolean;
-    given: boolean;
+    given: number;
+    isActive: boolean;
+    isDeleted: boolean;
     createdAt: Date;
     updatedAt: Date;
 
@@ -24,7 +26,9 @@ export interface BookingAttributes {
   endDate: Date;
   comments?: string;
   isPaid: boolean;
-  given: boolean;
+  given: number;
+  isActive: boolean;
+  isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

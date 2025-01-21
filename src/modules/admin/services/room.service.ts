@@ -7,13 +7,19 @@ class RoomService {
     constructor(private sequelize: Sequelize) { }
     async getAllRooms(): Promise<Room[]> {
         // Logic to get all rooms
-        const rooms = await Room.findAll();
+         const rooms = await Room.findAll({
+              attributes: { exclude: ['isDeleted'] },
+              where: { isDeleted: false }
+            });
         return rooms;
     }
 
     async getRoomById(id: number): Promise<Room | null> {
         // Logic to get a room by id
-        const room = await Room.findByPk(id);
+        const room = await Room.findOne({
+            where: { id: id, isDeleted: false },
+            attributes: { exclude: ['isDeleted'] }
+          });
         return room;
         
     }
@@ -42,7 +48,10 @@ class RoomService {
         // Logic to update a room
         const transaction = await this.sequelize.transaction();
         try {
-          const room = await Room.findByPk(id, { transaction });
+          const room = await Room.findOne({
+            where: { id: id, isDeleted: false },
+            attributes: { exclude: ['isDeleted'] }
+          });
           if (!room) {
             throw new Error('Room not found');
           }
@@ -67,12 +76,15 @@ class RoomService {
         // Logic to delete a room
         const transaction = await this.sequelize.transaction();
         try {
-          const room = await Room.findByPk(id, { transaction });
+          const room = await Room.findOne({
+            where: { id: id, isDeleted: false },
+            attributes: { exclude: ['isDeleted'] }
+          });
           if (!room) {
             throw new Error('Room not found');
           }
-    
-          await room.destroy({ transaction });
+          room.isDeleted = true;
+          await room.save({ transaction });
           await transaction.commit();
     
           return true;

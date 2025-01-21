@@ -9,14 +9,17 @@ class UserService {
   //getAllUsers method
   async getAllUsers() {
     const users = await User.findAll({
-      attributes: { exclude: ['password'] },
+      attributes: { exclude: ['password', 'isDeleted'] },
+      where: { isDeleted: false }
     });
-
     return users;
   }
+
+  //getUserById method
   async getUserById(userId: number) {
-    const user = await User.findByPk(userId, {
-      attributes: { exclude: ['password'] },
+    const user = await User.findOne({
+      where: { id: userId, isDeleted: false },
+      attributes: { exclude: ['password', 'isDeleted'] }
     });
 
     if (!user) {
@@ -30,8 +33,8 @@ class UserService {
   async createUser(data: UserCreationAttributes) {
     const transaction = await this.sequelize.transaction();
     try {
-      const exist = await User.findOne({ where: { login:data.login } });
-      if(exist){
+      const exist = await User.findOne({ where: { login: data.login } });
+      if (exist) {
         throw new Error('User already exist');
       }
       const user = await User.create(data, { transaction });
@@ -39,7 +42,7 @@ class UserService {
       return user;
     } catch (err) {
       await transaction.rollback();
-  
+
       if (err instanceof Error) {
         throw new Error(err.message);
       } else {
@@ -47,14 +50,17 @@ class UserService {
       }
     }
   }
-  
+
 
   //updateUser method
   async updateUser(userId: number, data: Partial<User>) {
     const transaction = await this.sequelize.transaction();
 
     try {
-      const user = await User.findByPk(userId, { transaction });
+      const user = await User.findOne({
+        where: { id: userId, isDeleted: false },
+        attributes: { exclude: ['password'] }
+      });
       if (!user) {
         throw new Error('User not found');
       }
@@ -74,20 +80,25 @@ class UserService {
     }
   }
 
-  
+
+  //deleteUser method
   async deleteUser(userId: number) {
     const transaction = await this.sequelize.transaction();
 
     try {
-      const user = await User.findByPk(userId, { transaction });
+      const user = await User.findOne({
+        where: { id: userId, isDeleted: false },
+        attributes: { exclude: ['password'] }
+      });
       if (!user) {
         throw new Error('User not found');
       }
 
-      await user.destroy({ transaction });
+      user.isDeleted = true;
+      await user.save({ transaction });
       await transaction.commit();
 
-      return user;
+      return true;
     } catch (err) {
       await transaction.rollback();
 
@@ -98,7 +109,72 @@ class UserService {
       }
     }
   }
-  
+
+  //get black list
+  async getBlackList() {
+    const users = await User.findAll({
+      attributes: { exclude: ['password'] },
+      where: { isDeleted: false, blacklist: true }
+    });
+    return users;
+  }
+
+  //Add to black list
+  async addToBlackList(userId: number) {
+    const transaction = await this.sequelize.transaction();
+
+    try {
+      const user = await User.findOne({
+        where: { id: userId, isDeleted: false },
+        attributes: { exclude: ['password'] }
+      });
+      if (!user) {
+        throw new Error('User not found');
+      }
+      user.blacklist = true;
+      await user.save({ transaction });
+      await transaction.commit();
+      return true;
+    } catch (err) {
+      await transaction.rollback();
+
+      if (err instanceof Error) {
+        throw new Error(err.message);
+      } else {
+        throw new Error('An unknown error occurred');
+      }
+    }
+  }
+
+  //Remove from black list
+  async removeFromBlackList(userId: number) {
+    const transaction = await this.sequelize.transaction();
+
+    try {
+      const user = await User.findOne({
+        where: { id: userId, isDeleted: false },
+        attributes: { exclude: ['password'] }
+      });
+      if (!user) {
+        throw new Error('User not found');
+      }
+      user.blacklist = false;
+      await user.save({ transaction });
+      await transaction.commit();
+      return true;
+    } catch (err) {
+      await transaction.rollback();
+
+      if (err instanceof Error) {
+        throw new Error(err.message);
+      } else {
+        throw new Error('An unknown error occurred');
+      }
+    }
+  }
+
+
+
 }
 
 export default new UserService(sequelize);

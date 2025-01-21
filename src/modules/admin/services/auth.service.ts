@@ -10,7 +10,11 @@ class AuthService {
 
   async login(login: string, password: string) {
     // Find user by identifier
-    const user = await User.findOne({ where: { login } });
+    const user = await User.findOne(
+      {
+        where: { login, isDeleted: false }, 
+      }
+    );
     if (!user) {
       throw new Error('User not found');
     }

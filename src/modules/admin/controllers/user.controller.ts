@@ -1,7 +1,7 @@
 // src/controllers/userController.ts
 import { Request, Response, NextFunction } from 'express';
 import asyncHandler from 'express-async-handler';
-import  UserService  from '../services/user.service';
+import UserService from '../services/user.service';
 import logger from '../../../utils/logger';
 import { User } from '../../../models/User';
 
@@ -9,9 +9,13 @@ export const getUserByIdHandler = asyncHandler(async (req: Request, res: Respons
     try {
         const userId = Number(req.params.id);
         // const userService = new UserService(sequelize);
-        console.log(req.params)
+        // console.log(req.params)
         const user = await UserService.getUserById(userId);
-        res.json(user);
+        if (user) {
+            res.json(user);
+            return; 
+        }
+        res.status(404).json({ msg: 'User not found' });
     } catch (error) {
         logger.error(`Get User Info Error: ${getErrorMessage(error)}`);
         next(error);
@@ -59,12 +63,44 @@ export const updateUserRequestHandler = asyncHandler(async (req: Request, res: R
 export const deleteUserRequestHandler = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userId = Number(req.params.id);
-       
+
 
         const deletedUser = await UserService.deleteUser(userId);
         res.json(deletedUser);
     } catch (error) {
         logger.error(`Delete User Info Error: ${getErrorMessage(error)}`);
+        next(error);
+    }
+});
+
+export const getBlackListREquestHandler = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const blackList = await UserService.getBlackList();
+        res.json(blackList);
+    } catch (error) {
+        logger.error(`Get BlackList Info Error: ${getErrorMessage(error)}`);
+        next(error);
+    }
+});
+
+export const addToBlackListRequestHandler = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = Number(req.params.id);
+        const user = await UserService.addToBlackList(userId);
+        res.json(user);
+    } catch (error) {
+        logger.error(`Add to BlackList Info Error: ${getErrorMessage(error)}`);
+        next(error);
+    }
+});
+
+export const removeFromBlackListRequestHandler = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = Number(req.params.id);
+        const user = await UserService.removeFromBlackList(userId);
+        res.json(user);
+    } catch (error) {
+        logger.error(`Remove from BlackList Info Error: ${getErrorMessage(error)}`);
         next(error);
     }
 });

@@ -7,7 +7,7 @@ import bookingService from '../services/booking.service';
 
 export const getBookingsRequestHandler = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const bookings = await bookingService.getAllbookings();
+        const bookings = await bookingService.getAllBookings();
         res.json({
             msg: 'All bookings',
             data: bookings
@@ -23,7 +23,7 @@ export const getBookingByIdHandler = asyncHandler(async (req: Request, res: Resp
         const userId = Number(req.params.id);
         // const userService = new UserService(sequelize);
         console.log(req.params)
-        const user = await bookingService.getbookingById(userId);
+        const user = await bookingService.getBookingById(userId);
         res.json(user);
     } catch (error) {
         logger.error(`Get User Info Error: ${getErrorMessage(error)}`);
@@ -37,7 +37,7 @@ export const createBookingRequestHandler = asyncHandler(async (req: Request, res
         const images = req.files ? (req.files as Express.Multer.File[]).map((file) => file.originalname).join(",") : "Not specified";
         req.body.images = images;
         
-        const createdbooking = await bookingService.createbooking(req.body);
+        const createdbooking = await bookingService.createBooking(req.body);
         // const updatedUser = await userService.createUser();
         res.json(createdbooking);
     } catch (error) {
@@ -52,7 +52,7 @@ export const updateBookingRequestHandler = asyncHandler(async (req: Request, res
         // console.log(req.files);
         const images = req.files ? (req.files as Express.Multer.File[]).map((file) => file.originalname).join(",") : "Not specified";
         req.body.smallImages = images;
-        const updatedbooking = await bookingService.updatebooking(bookingId, req.body);
+        const updatedbooking = await bookingService.updateBooking(bookingId, req.body);
         res.json(updatedbooking);
     } catch (error) {
         logger.error(`Update User Info Error: ${getErrorMessage(error)}`);

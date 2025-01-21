@@ -98,6 +98,13 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
     })
     password!: string;
 
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    })
+    isDeleted!: boolean;
+
     // Timestamps (createdAt, updatedAt) will be automatically added 
     // since timestamps: true is set. 
     // You can override their column names with e.g.:

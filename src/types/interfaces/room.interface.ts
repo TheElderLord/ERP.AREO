@@ -21,7 +21,7 @@ interface Room {
     images?: string[];
     smallImages?: string[];
     shortName?: string;
-
+    isDeleted: boolean;
     // Timestamps
     createdAt: Date;
     updatedAt: Date;
@@ -48,6 +48,7 @@ export interface RoomAttributes {
   images?: string[];
   smallImages?: string[];
   shortName?: string;
+  isDeleted: boolean;
 
   // Timestamps
   createdAt: Date;

@@ -13,7 +13,7 @@ app.use(corsMiddleware);
 app.use(securityMiddleware);
 
 // Routes
-app.use('/admin', adminRoutes);
+app.use('/api/v1/admin', adminRoutes);
 
 // Error Handler
 app.use(errorHandler);

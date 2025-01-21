@@ -4,6 +4,7 @@ node_modules
 .env.dev
 dist
 uploads
+logs
 
 .env.*
 package-lock.json

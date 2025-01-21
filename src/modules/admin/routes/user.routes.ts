@@ -1,6 +1,6 @@
 // src/routes/userRoutes.ts
 import { Router } from 'express';
-import { getUsersRequestHandler,  createUserRequestHandler, getUserByIdHandler, updateUserRequestHandler, deleteUserRequestHandler } from '../controllers/user.controller';
+import { getUsersRequestHandler,  createUserRequestHandler, getUserByIdHandler, updateUserRequestHandler, deleteUserRequestHandler, getBlackListREquestHandler, addToBlackListRequestHandler, removeFromBlackListRequestHandler } from '../controllers/user.controller';
 import authMiddleware from '../../../middlewares/auth.middleware';
 
 const router = Router();
@@ -11,6 +11,11 @@ router.route('/').get( authMiddleware, getUsersRequestHandler)
 
 router.route("/:id").get(authMiddleware,getUserByIdHandler)
 .put(authMiddleware,updateUserRequestHandler)
-.delete(authMiddleware,deleteUserRequestHandler);
+.delete(authMiddleware,deleteUserRequestHandler)
+
+
+router.route('/:id').get(authMiddleware, getBlackListREquestHandler)
+.patch(authMiddleware, addToBlackListRequestHandler)
+.delete(authMiddleware, removeFromBlackListRequestHandler);
 
 export default router;

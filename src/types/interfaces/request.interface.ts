@@ -8,7 +8,8 @@ interface Request {
     status: RequestStatus;
     requestedDate: Date;
     requestedTime: string;
-
+    isDeleted: boolean;
+    isCompleted: boolean;
     // Timestamps
     createdAt: Date;
     updatedAt: Date;
@@ -21,7 +22,8 @@ export interface RequestAttributes {
   status: RequestStatus;
   requestedDate: Date;
   requestedTime: string;
-
+  isDeleted: boolean;
+  isCompleted: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

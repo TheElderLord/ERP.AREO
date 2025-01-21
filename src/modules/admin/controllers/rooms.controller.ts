@@ -22,8 +22,13 @@ export const getRoomByIdHandler = asyncHandler(async (req: Request, res: Respons
     try {
         const userId = Number(req.params.id);
         // const userService = new UserService(sequelize);
-        console.log(req.params)
+        // console.log(req.params)
         const user = await roomService.getRoomById(userId);
+        if(!user) {
+            res.status(404).json({msg: 'Room not found'});
+            return;
+        }
+
         res.json(user);
     } catch (error) {
         logger.error(`Get User Info Error: ${getErrorMessage(error)}`);
@@ -59,6 +64,22 @@ export const updateRoomRequestHandler = asyncHandler(async (req: Request, res: R
         next(error);
     }
 });
+
+export const deleteRoomRequestHandler = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const roomId = Number(req.params.id);
+        // console.log(req.files);
+        const room = await roomService.deleteRoom(roomId);
+        if(room) {
+            res.json({msg: 'Room deleted successfully'});
+            return;
+        }
+        res.json(room);
+    } catch (error) {
+        logger.error(`Update User Info Error: ${getErrorMessage(error)}`);
+        next(error);
+    }
+})
 
 
 function getErrorMessage(error: unknown): string {
