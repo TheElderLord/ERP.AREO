@@ -116,8 +116,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
     // updatedAt!: Date;
 
     // Relations
-    @HasMany(() => Booking)
-    bookings!: Booking[];
+
 
 
     // Hooks

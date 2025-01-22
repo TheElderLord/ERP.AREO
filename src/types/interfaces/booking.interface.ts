@@ -3,7 +3,7 @@ import { Optional } from 'sequelize';
 
 interface Booking {
     id: number;
-    userId: number;
+    // userId: number;
     roomId: number;
     startDate: Date;
     endDate: Date;
@@ -20,7 +20,7 @@ interface Booking {
 
 export interface BookingAttributes {
   id: number;
-  userId: number;
+  // userId: number;
   roomId: number;
   startDate: Date;
   endDate: Date;

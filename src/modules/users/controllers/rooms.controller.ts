@@ -8,10 +8,7 @@ import roomService from '../services/room.service';
 export const getRoomsRequestHandler = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     try {
         const rooms = await roomService.getAllRooms();
-        res.json({
-            msg: 'All Rooms',
-            data: rooms
-        });
+        res.json(rooms);
     } catch (error) {
         logger.error(`Get Room Error: ${getErrorMessage(error)}`);
         next(error);

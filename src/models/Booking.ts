@@ -28,16 +28,6 @@ export class Booking extends Model<BookingAttributes, BookingCreationAttributes>
   })
   id!: number;
 
-  // Foreign Key referencing a User
-  @ForeignKey(() => User)
-  @Column({
-    type: DataType.INTEGER.UNSIGNED,
-    allowNull: false,
-  })
-  userId!: number;
-
-  @BelongsTo(() => User)
-  user?: User;
 
   // Foreign Key referencing a Room
   @ForeignKey(() => Room)
