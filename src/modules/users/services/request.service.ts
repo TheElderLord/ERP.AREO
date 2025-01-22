@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import { sequelize } from '../../../config';
 import { Request } from '../../../models/Request';
-import { RequestCreationAttributes } from '../../../types/interfaces/request.interface';
+import { RequestCreationAttributes } from '../../../types/interfaces/requests/request.interface';
 
 class RequestService {
     constructor(private sequelize: Sequelize) { }

@@ -8,11 +8,11 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { RequestAttributes, RequestCreationAttributes } from '../types/interfaces/request.interface';
+import { RequestAttributes, RequestCreationAttributes } from '../types/interfaces/requests/request.interface';
 
-// Example: If you have a User model
-import { User } from './User';
+
 import { RequestStatus } from '../types/enums/request-status.enum';
+import { Room } from './Room';
 
 @Table({
   tableName: 'requests',
@@ -26,33 +26,30 @@ export class Request extends Model<RequestAttributes, RequestCreationAttributes>
   })
   id!: number;
 
-  @ForeignKey(() => User)
-  @Column({
-    type: DataType.INTEGER.UNSIGNED,
-    allowNull: false,
-  })
-  userId!: number;
-
-  @BelongsTo(() => User)
-  user?: User;
-
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
   status!: RequestStatus;
 
+  @ForeignKey(() => Room)
   @Column({
-    type: DataType.DATE,
+    type: DataType.INTEGER.UNSIGNED,
     allowNull: false,
   })
-  requestedDate!: Date;
+  roomId!: number;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  requestedTime!: string;
+  phone_number!: String;
+
+  @BelongsTo(() => Room)
+  room?: Room;
+
+  
+
 
 
   @Column({

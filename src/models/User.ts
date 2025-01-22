@@ -119,8 +119,6 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
     @HasMany(() => Booking)
     bookings!: Booking[];
 
-    @HasMany(() => Request)
-    requests!: Request[];
 
     // Hooks
     @BeforeCreate
